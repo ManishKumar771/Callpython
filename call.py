@@ -1,35 +1,15 @@
-import os
-import time
-from datetime import datetime
+from twilio.rest import Client
 
-# =============================================================================
-# 1. MAKING PHONE CALLS
-# =============================================================================
+# Twilio credentials (get from Twilio console)
+account_sid = 'account_sid'
+auth_token = 'your_auth'
+client = Client(account_sid, auth_token)
 
-# Method 1: Using Twilio API (Recommended - Professional)
-def make_phone_call_twilio():
-    """
-    Make a phone call using Twilio API
-    Requires: pip install twilio
-    """
-    try:
-        from twilio.rest import Client
-        
-        # Your Twilio credentials (get from twilio.com)
-        account_sid = 'your_account_sid'
-        auth_token = 'your_auth_token'
-        twilio_phone_number = 'your_twilio_phone_number'
-        
-        client = Client(account_sid, auth_token)
-        
-        call = client.calls.create(
-            to='+1234567890',  # Recipient's phone number
-            from_=twilio_phone_number,
-            url='http://demo.twilio.com/docs/voice.xml'  # TwiML URL for call instructions
-        )
-        
-        print(f"Call initiated with SID: {call.sid}")
-        return call.sid
-        
-    except Exception as e:
-        print(f"Error making call: {e}")
+# Make a call
+call = client.calls.create(
+    twiml='<Response><Say>Hello, this is an automated call from Python!</Say></Response>',
+    to='+91your_no.',     # Your phone number with country code
+    from_='+12314344553'    # Your Twilio phone number
+)
+
+print(f"Call initiated! SID: {call.sid}")
